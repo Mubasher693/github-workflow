@@ -1,5 +1,5 @@
+# "Actions workflow to check the working of checkout and other marketplace actions how we can use steps keywork to get variables of specific step using id. Use of with to take input"
 name: Workflow To Get Input And Post Output
-description: "Actions workflow to check the working of checkout and other marketplace actions how we can use steps keywork to get variables of specific step using id. Use of with to take input"
 
 on: [push]
 
