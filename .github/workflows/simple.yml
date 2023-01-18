@@ -1,10 +1,10 @@
-name: Shell Commands
+name: This is workflow name
 
 
 on: [push]
 
 jobs:
-  run-shell-command:
+  this-is-job-name:
     runs-on: ubuntu-latest
     steps:
       - name: echo a string
