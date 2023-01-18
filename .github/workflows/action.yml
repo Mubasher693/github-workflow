@@ -13,8 +13,8 @@ jobs:
         with:
           who-to-greet: 'Mubasher Iqbal'
       - name: Check time taken to print name
+        run: echo "{{ steps.greet.outputs.time }}"
         # steps is to get information of complete step all the variable etc.
         # greet is id of one specific step, from which we will pick something.
         # outputs and time are github default variable for this (actions/hello-world-javascript-action) action
-        run: echo "{{ steps.greet.outputs.time }}"
           
