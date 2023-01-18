@@ -1,5 +1,5 @@
 name: Workflow To Get Input And Post Output
-
+description: "Actions workflow to check the working of checkout and other marketplace actions how we can use steps keywork to get variables of specific step using id. Use of with to take input"
 
 on: [push]
 
@@ -7,6 +7,9 @@ jobs:
   Action-Job-To-Do-IO:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Action
+        # We can use below mention action to fetch and checkout to the comment that causes this workflow to run.
+        uses: actions/checkout@v3.3.0
       - name: List Directory
         run: |
           pwd
@@ -17,7 +20,7 @@ jobs:
         with:
           who-to-greet: 'Mubasher Iqbal'
       - name: Check time taken to print name
-        run: echo "{{ steps.greet.outputs.time }}"
+        run: echo "${{ steps.greet.outputs.time }}"
         # steps is to get information of complete step all the variable etc.
         # greet is id of one specific step, from which we will pick something.
         # outputs and time are github default variable for this (actions/hello-world-javascript-action) action
