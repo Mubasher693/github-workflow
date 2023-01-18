@@ -7,6 +7,10 @@ jobs:
   Action-Job-To-Do-IO:
     runs-on: ubuntu-latest
     steps:
+      - name: List Directory
+        run: |
+          pwd
+          ls
       - name: Print name
         id: greet
         uses: actions/hello-world-javascript-action@v1.1
