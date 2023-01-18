@@ -1,0 +1,20 @@
+name: Workflow To Get Input And Post Output
+
+
+on: [push]
+
+jobs:
+  Action-Job-To-Do-IO:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print name
+        id: greet
+        uses: actions/hello-world-javascript-action@v1.1
+        with:
+          who-to-greet: 'Mubasher Iqbal'
+      - name: Check time taken to print name
+        # steps is to get information of complete step all the variable etc.
+        # greet is id of one specific step, from which we will pick something.
+        # outputs and time are github default variable for this (actions/hello-world-javascript-action) action
+        run: echo "{{ steps.greet.outputs.time }}"
+          
