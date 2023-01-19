@@ -1,0 +1,19 @@
+# Github Events workflow to check how we can invoke any workflow on events e.g pull_request. For that we require another branch as well.
+# List of all events that we can utalize are mentioned here https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+name: Github Events
+
+on:
+  schedule:
+    - cron: "0/5 * * * *" 
+
+jobs:
+  Pull-Request-Action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Request Action
+        # We can use below mention action to fetch and checkout to the comment that causes this workflow to run.
+        uses: actions/checkout@v3.3.0
+      - name: List Directory
+        run: |
+          pwd
+          ls
