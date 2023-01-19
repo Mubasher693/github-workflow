@@ -1,0 +1,27 @@
+# Github Events workflow to check how we can invoke any workflow on events e.g pull_request. For that we require another branch as well.
+# List of all events that we can utalize are mentioned here https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+name: Github Events
+
+on:
+
+  # https://docs.github.com/en/rest/repos#create-a-repository-dispatch-event
+  repository_dispatch:
+    types: [build]
+
+  # schedule:
+  #   - cron: "0/5 * * * *" 
+
+  pull_request:
+    types: [opened, closed, assigned, reopened]
+
+jobs:
+  run-github-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Latest
+        # We can use below mention action to fetch and checkout to the comment that causes this workflow to run.
+        uses: actions/checkout@v3.3.0
+      - name: List Directory
+        run: |
+          pwd
+          ls
