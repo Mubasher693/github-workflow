@@ -18,6 +18,9 @@ jobs:
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
+      - name: Client Payload
+        # Will be calling this using https://api.github.com/repos/Mubasher693/github-workflow/dispatches Check docs : https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event
+        run: echo "${{ github.event.client_payload.env }}"
       - name: Checkout Latest
         # We can use below mention action to fetch and checkout to the comment that causes this workflow to run.
         uses: actions/checkout@v3.3.0
