@@ -3,12 +3,14 @@
 name: Github Events
 
 on:
-  repository_dispatch:
+
   # https://docs.github.com/en/rest/repos#create-a-repository-dispatch-event
+  repository_dispatch:
     types: [build]
 
-  schedule:
-    # - cron: "0/5 * * * *" 
+  # schedule:
+  #   - cron: "0/5 * * * *" 
+
   pull_request:
     types: [opened, closed, assigned, reopened]
 
