@@ -1,4 +1,5 @@
 # Github Events workflow to check how we can invoke any workflow on events e.g pull_request. For that we require another branch as well.
+# List of all events that we can utalize are mentioned here https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 name: Github Events
 
 on: [pull_request]
