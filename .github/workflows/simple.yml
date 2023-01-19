@@ -1,7 +1,10 @@
 name: This is workflow name
 
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - master
 
 jobs:
   this-is-job-name:

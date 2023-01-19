@@ -3,6 +3,10 @@
 name: Github Events
 
 on:
+  push:
+    branches:
+      # Please check patterns at https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet 
+      - master
 
   # https://docs.github.com/en/rest/repos#create-a-repository-dispatch-event
   repository_dispatch:
