@@ -1,0 +1,28 @@
+name: Matrix 
+# How we can run job for multiple version and in batch.
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  WF_ENV_GLOBAL: Enviroment vailable-Available to all jobs.
+  WF_ENV: ${{ secrets.WF_ENV }}
+
+jobs:
+  node-version:
+    strategy:
+      matrix:
+        node_version: [6,8,10]
+      max-parallel: 2
+      fail-fast: true
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Node Version
+        id: github_context_step
+        run: echo node --version
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node_version }}
