@@ -1,0 +1,19 @@
+name: Container 
+# How we can run job for multiple version and in batch.
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  node-docker:
+    runs-on: ubuntu-latest
+    container:
+      image: node:13.5.0-alpine3.10
+    steps:
+      - name: Log Node Version
+        run: |
+          node -v
+          cat /etc/os-release
+      

@@ -3,7 +3,7 @@ name: Matrix
 
 on:
   push:
-    branches:
+    branches-ignore:
       - master
 
 env:
