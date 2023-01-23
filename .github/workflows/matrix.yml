@@ -21,8 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Log Node Version
-        id: github_context_step
-        run: echo node --version
+        run: node -v
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
