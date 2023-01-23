@@ -23,6 +23,6 @@ jobs:
       - name: Log Node Version
         id: github_context_step
         run: echo node --version
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
