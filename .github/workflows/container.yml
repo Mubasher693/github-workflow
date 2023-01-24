@@ -30,4 +30,16 @@ jobs:
         with:
           entrypoint: /usr/local/bin/node
           args: -v
+  # Execute own executable file in step.
+  execute-own-executable:
+    runs-on: ubuntu-latest
+    container:
+      image: node:10.18.0-jessie
+    steps:
+      - uses: action/checkout@v1
+      - name: Execute with docker
+        uses: docker://node:12.14.1-alpine3.10
+        with:
+          entrypoint: ./script.sh
+          args: 'Argument-1-string Argument-2-string'
       
