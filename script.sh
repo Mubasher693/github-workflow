@@ -1,3 +1,3 @@
  #!/bin/sh
- 
- echo "This is our bash script executed via job in docket"
+ echo $1 $2
+ echo 'This is our bash script executed via job'
