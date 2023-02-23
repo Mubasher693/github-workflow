@@ -29,5 +29,6 @@ jobs:
       
       - run: |
           mysql -uroot -h127.0.0.1 -e 'SELECT version()'
+          mysql -uroot -h127.0.0.1 -e 'create schema schema_name;'
           mysql -uroot -h127.0.0.1 af_ukrc < db/database.sql
           
