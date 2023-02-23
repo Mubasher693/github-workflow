@@ -33,6 +33,5 @@ jobs:
           mysql -uroot -h127.0.0.1 -e 'create schema af_ukrc;'
           mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
           mysql -uroot -h127.0.0.1 af_ukrc < db/database.sql
-          mysql -uroot -h127.0.0.1 -e 'use af_ukrc;'
-          mysql -uroot -h127.0.0.1 -e 'show tables;'
+          mysql -uroot -h127.0.0.1 -e 'SHOW TABLES FROM af_ukrc;'
           
