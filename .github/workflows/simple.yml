@@ -32,6 +32,10 @@ jobs:
           mysql -uroot -h127.0.0.1 -e 'SELECT version();'
           mysql -uroot -h127.0.0.1 -e 'create schema af_ukrc;'
           mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
+
+      - name: List Database and tables
+        run: |
+          mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
           mysql -uroot -h127.0.0.1 af_ukrc < db/database.sql
           mysql -uroot -h127.0.0.1 -e 'SHOW TABLES FROM af_ukrc;'
           
