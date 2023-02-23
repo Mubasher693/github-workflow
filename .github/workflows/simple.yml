@@ -10,15 +10,24 @@ jobs:
   this-is-job-name:
     runs-on: ubuntu-latest
     steps:
+      
       - name: echo a string
         run: echo "Hello World"
+      
       - name: multile script
         run: |
           echo 'Command 1'
           echo 'Command 2'
+      
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Install MySQL client
         uses: shogo82148/actions-setup-mysql@v1
         with:
           mysql-version: '8.0'
-      - run: mysql -uroot -h127.0.0.1 -e 'SELECT version()'
+      
+      - run: |
+          mysql -uroot -h127.0.0.1 -e 'SELECT version()'
+          mysql -uroot -h127.0.0.1 af_ukrc < db/database.sql
           
