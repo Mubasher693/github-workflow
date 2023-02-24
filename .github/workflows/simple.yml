@@ -18,6 +18,22 @@ jobs:
       DB_PWD:
       DB_NAME: ${{ secrets.DB_NAME_WORKFLOW }}
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: ${{ secrets.DB_NAME_WORKFLOW }}
+          MYSQL_USER: ${{ secrets.DB_USER_WORKFLOW }}
+          MYSQL_PASSWORD : ${{ secrets.DB_PWD_WORKFLOW }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PWD_WORKFLOW }}
+        ports:
+          - ${{ secrets.DB_PORT_WORKFLOW }}:${{ secrets.DB_PORT_WORKFLOW }}
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
       
       - name: echo a string
@@ -53,18 +69,18 @@ jobs:
 #        with:
 #          mysql-version: '8.0'
 
-      - name: Install MySQL client
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          host port: 3306 # Optional, default value is 3306. The port of host
-          container port: 3306 # Optional, default value is 3306. The port of container
-          character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
-          collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
-          mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
-          mysql database: ${{ secrets.DB_NAME_WORKFLOW }} # Optional, default value is "test". The specified database which will be create
-          mysql root password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" is empty, default is empty. The root superuser password
-          mysql user: ${{ secrets.DB_USER_WORKFLOW }} # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-          mysql password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" exists. The password for the "mysql user"
+#      - name: Install MySQL client
+#        uses: mirromutth/mysql-action@v1.1
+#        with:
+#          host port: 3306 # Optional, default value is 3306. The port of host
+#          container port: 3306 # Optional, default value is 3306. The port of container
+#          character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
+#          collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
+#          mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
+#          mysql database: ${{ secrets.DB_NAME_WORKFLOW }} # Optional, default value is "test". The specified database which will be create
+#          mysql root password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" is empty, default is empty. The root superuser password
+#          mysql user: ${{ secrets.DB_USER_WORKFLOW }} # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+#          mysql password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" exists. The password for the "mysql user"
 
 
       - name: Replace placeholders in .env file
@@ -78,10 +94,10 @@ jobs:
         continue-on-error: true
         run: |
           run: |
-          mysql -h ${{ secrets.DB_HOST_WORKFLOW }} -u ${{ secrets.DB_USER_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SELECT version();'
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'create schema ${{ secrets.DB_NAME_WORKFLOW }};'
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SHOW DATABASES;'
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} ${{ secrets.DB_NAME_WORKFLOW }} < db/database.sql
+          mysql -u ${{ secrets.DB_USER_WORKFLOW }} -h ${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SELECT version();'
+          mysql -u ${{ secrets.DB_USER_WORKFLOW }} -h ${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'create schema ${{ secrets.DB_NAME_WORKFLOW }};'
+          mysql -u ${{ secrets.DB_USER_WORKFLOW }} -h ${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SHOW DATABASES;'
+          mysql -u ${{ secrets.DB_USER_WORKFLOW }} -h ${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} ${{ secrets.DB_NAME_WORKFLOW }} < db/database.sql
           
       - name: Run tests
         continue-on-error: true
