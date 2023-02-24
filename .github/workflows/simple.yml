@@ -27,7 +27,7 @@ jobs:
           MYSQL_PASSWORD : ${{ secrets.DB_PWD_WORKFLOW }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PWD_WORKFLOW }}
         ports:
-          - ${{ secrets.DB_PORT_WORKFLOW }}:${{ secrets.DB_PORT_WORKFLOW }}
+          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
