@@ -55,6 +55,9 @@ jobs:
 
       - name: Replace placeholders in .env file
         run: |
+          pwd
+          ls
+          echo ${{ github.workspace }}
           envsubst < ${{ github.workspace }}/.env.sample > ${{ github.workspace }}.env
 
       - name: Restore Database
