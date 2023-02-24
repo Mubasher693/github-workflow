@@ -10,7 +10,7 @@ jobs:
   this-is-job-name:
     runs-on: ubuntu-latest
     env:
-      extensions: mcrypt, curl, gd, intl, oauth, mysql, imagick, zip
+      extensions: mysql
       php-versions: '8.0'
       key: php-v8.0
       DB_HOSTNAME: ${{ secrets.DB_HOST_WORKFLOW }}
