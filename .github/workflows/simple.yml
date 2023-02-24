@@ -76,4 +76,5 @@ jobs:
           pwd
           ls
           cat ${{ github.workspace }}/.env
-          ./vendor/bin/phpunit --verbose tests/UserTest.php
+          ./vendor/bin/phpunit --exclude-group ignore --configuration ${{ github.workspace }}/phpunit.xml.dist  --log-junit php_unit_report.xml
+#          ./vendor/bin/phpunit --verbose tests/UserTest.php

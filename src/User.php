@@ -77,7 +77,7 @@ class User
             return false;
         }
         $sql = "INSERT INTO tblactivityfeeds (ActivitySubject, ActivityType, ActivityDetails, CreatedDate, CreatedByUsername, CreatedByUserId, AuditFileNumber)
-                VALUES ('muabsher', 'feed', 'dummy details', NOW(), 'mubasher', 1, 1)";
+                VALUES ('muabsher', 'feed', 'dummy details', ".time().", 'mubasher', 1, 1)";
 
         if ($conn->query($sql) !== TRUE) {
             return false;

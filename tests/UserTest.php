@@ -58,9 +58,9 @@ final class UserTest extends TestCase
         $this->assertTrue($user->connectToDB());
     }
 
-    /*public function testInsertData()
+    public function testInsertData()
     {
         $user = new User(18, 'John', getenv('DB_HOSTNAME'), getenv('DB_USER'), getenv('DB_PWD'), getenv('DB_NAME'));
         $this->assertTrue($user->insertData());
-    }*/
+    }
 }
