@@ -15,7 +15,7 @@ jobs:
       key: php-v8.0
       DB_HOSTNAME: ${{ secrets.DB_HOST_WORKFLOW }}
       DB_USER: ${{ secrets.DB_USER_WORKFLOW }}
-      DB_PWD:
+      DB_PWD: ${{ secrets.DB_PWD_WORKFLOW }}
       DB_NAME: ${{ secrets.DB_NAME_WORKFLOW }}
 
     services:
