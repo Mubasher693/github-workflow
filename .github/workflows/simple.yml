@@ -22,20 +22,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
+
       - name: Install MySQL client
-        uses: shogo82148/actions-setup-mysql@v1
+        uses: mirromutth/mysql-action@v1.1
         with:
-          mysql-version: '8.0'
+            host port: ${{ secrets.DB_PORT_WORKFLOW }} # Optional, default value is 3306. The port of host
+            container port: ${{ secrets.DB_PORT_WORKFLOW }} # Optional, default value is 3306. The port of container
+            character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
+            collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
+            mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
+            mysql database: ${{ secrets.DB_NAME_WORKFLOW }} # Optional, default value is "test". The specified database which will be create
+            mysql root password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" is empty, default is empty. The root superuser password
+            mysql user: ${{ secrets.DB_USER_WORKFLOW }} # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+            mysql password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" exists. The password for the "mysql user"
+#        uses: shogo82148/actions-setup-mysql@v1
+#        with:
+#          mysql-version: '8.0'
+
 
       - name: Restore Database
         run: |
-          mysql -uroot -h127.0.0.1 -e 'SELECT version();'
-          mysql -uroot -h127.0.0.1 -e 'create schema af_ukrc;'
-          mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'SELECT version();'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'create schema ${{ secrets.DB_NAME_WORKFLOW }};'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'SHOW DATABASES;'
 
       - name: List Database and tables
         run: |
-          mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
-          mysql -uroot -h127.0.0.1 af_ukrc < db/database.sql
-          mysql -uroot -h127.0.0.1 -e 'SHOW TABLES FROM af_ukrc;'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'SHOW DATABASES;'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} ${{ secrets.DB_NAME_WORKFLOW }} < db/database.sql
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'SHOW TABLES FROM ${{ secrets.DB_NAME_WORKFLOW }};'
+          
+      
           
