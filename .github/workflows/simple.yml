@@ -15,7 +15,7 @@ jobs:
       key: php-v8.0
       DB_HOSTNAME: ${{ secrets.DB_HOST_WORKFLOW }}
       DB_USER: ${{ secrets.DB_USER_WORKFLOW }}
-      DB_PWD: ${{ secrets.DB_PWD_WORKFLOW }}
+      DB_PWD:
 
     steps:
       
@@ -46,14 +46,18 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist
 
+#      - name: Install MySQL client
+#        uses: mirromutth/mysql-action@v1
+#        with:
+#          mysql version: '8.0'
+#          mysql database: ${{ secrets.DB_NAME_WORKFLOW }}
+#          mysql password: ${{ secrets.DB_PWD_WORKFLOW }}
+#          mysql user: ${{ secrets.DB_USER_WORKFLOW }}
       - name: Install MySQL client
-        uses: mirromutth/mysql-action@v1
+        continue-on-error: true
+        uses: shogo82148/actions-setup-mysql@v1
         with:
-          mysql version: '8.0'
-          mysql database: ${{ secrets.DB_NAME_WORKFLOW }}
-          mysql password: ${{ secrets.DB_PWD_WORKFLOW }}
-          mysql user: ${{ secrets.DB_USER_WORKFLOW }}
-
+          mysql-version: '8.0'
 
       - name: Replace placeholders in .env file
         run: |
@@ -69,16 +73,16 @@ jobs:
       - name: Restore Database
         continue-on-error: true
         run: |
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SELECT version();'
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'create schema ${{ secrets.DB_NAME_WORKFLOW }};'
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SHOW DATABASES;'
+          mysql -h ${{ secrets.DB_HOST_WORKFLOW }} -u ${{ secrets.DB_USER_WORKFLOW }} -e 'SELECT version();'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'create schema ${{ secrets.DB_NAME_WORKFLOW }};'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'SHOW DATABASES;'
 
       - name: List Database and tables
         continue-on-error: true
         run: |
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SHOW DATABASES;'
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} ${{ secrets.DB_NAME_WORKFLOW }} < db/database.sql
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SHOW TABLES FROM ${{ secrets.DB_NAME_WORKFLOW }};'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'SHOW DATABASES;'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} ${{ secrets.DB_NAME_WORKFLOW }} < db/database.sql
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'SHOW TABLES FROM ${{ secrets.DB_NAME_WORKFLOW }};'
           
       
           
