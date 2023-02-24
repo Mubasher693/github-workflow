@@ -75,7 +75,6 @@ jobs:
         run: |
           mysql -h ${{ secrets.DB_HOST_WORKFLOW }} -u ${{ secrets.DB_USER_WORKFLOW }} -e 'SELECT version();'
           mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'create schema ${{ secrets.DB_NAME_WORKFLOW }};'
-          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'SHOW DATABASES;'
 
       - name: List Database and tables
         continue-on-error: true
