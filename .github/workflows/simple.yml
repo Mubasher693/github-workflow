@@ -77,4 +77,11 @@ jobs:
           ls
           cat ${{ github.workspace }}/.env
           ./vendor/bin/phpunit --exclude-group ignore --configuration ${{ github.workspace }}/phpunit.xml.dist  --log-junit php_unit_report.xml
-#          ./vendor/bin/phpunit --verbose tests/UserTest.php
+
+      - name: Upload Unit Test Results
+        continue-on-error: true
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Unit Test Results PHP
+          path: ${{ github.workspace }}/php_unit_report.xml
