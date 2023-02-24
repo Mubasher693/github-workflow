@@ -22,9 +22,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-#      - name: Shutdown Ubuntu MySQL (SUDO)
-#        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
-
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -32,11 +29,12 @@ jobs:
           extensions: mysqli
 
       - name: Install MySQL client
-        uses: actions/setup-mysql@v1
+        uses: mirromutth/mysql-action@v1
         with:
-          mysql-version: '8.0'
-          mysql-port: ${{ secrets.DB_PORT_WORKFLOW }}
-          mysql-root-password: ${{ secrets.DB_PWD_WORKFLOW }}
+          mysql version: '8.0'
+          mysql database: ${{ secrets.DB_NAME_WORKFLOW }}
+          mysql password: ${{ secrets.DB_PWD_WORKFLOW }}
+          mysql user: ${{ secrets.DB_USER_WORKFLOW }}
 
       - name: Install Composer
         run: |
@@ -47,9 +45,6 @@ jobs:
       - name: Install dependencies
         run: composer install
 
-#        uses: shogo82148/actions-setup-mysql@v1
-#        with:
-#          mysql-version: '8.0'
       - name: Replace placeholders in .env file
         run: |
           envsubst < .env.sample > .env
