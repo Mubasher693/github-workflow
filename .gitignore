@@ -4,3 +4,5 @@ bin/
 vendor/
 .env
 .idea/workspace.xml
+/.phpunit.result.cache
+/php_unit_report.xml
