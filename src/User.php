@@ -12,6 +12,7 @@ class User
     public $servername;
     public $username;
     public $password;
+    public $dbname;
 
     /**
      * @param int $age
@@ -20,13 +21,14 @@ class User
      * @param $username
      * @param $password
      */
-    public function __construct(int $age, string $name, $servername = null, $username = null, $password = null)
+    public function __construct(int $age, string $name, $servername = null, $username = null, $password = null, $dbname = null)
     {
         $this->age = $age;
         $this->name = $name;
         $this->servername = $servername;
         $this->username = $username;
         $this->password = $password;
+        $this->dbname = $dbname;
     }
 
     public function tellName(): string
@@ -58,11 +60,29 @@ class User
     public function connectToDB(): bool
     {
         // Create connection
-        $conn = new \mysqli($this->servername, $this->username, $this->password);
+        $conn = new \mysqli($this->servername, $this->username, $this->password, $this->dbname);
         // Check connection
         if ($conn->connect_error) {
             return false;
         }
+        return true;
+    }
+
+    public function insertData(): bool
+    {
+        // Create connection
+        $conn = new \mysqli($this->servername, $this->username, $this->password, $this->dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            return false;
+        }
+        $sql = "INSERT INTO tblactivityfeeds (ActivitySubject, ActivityType, ActivityDetails, CreatedDate, CreatedByUsername, CreatedByUserId, AuditFileNumber)
+                VALUES ('muabsher', 'feed', 'dummy details', NOW(), 'mubasher', 1, 1)";
+
+        if ($conn->query($sql) !== TRUE) {
+            return false;
+        }
+        $conn->close();
         return true;
     }
 }

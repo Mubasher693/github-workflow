@@ -16,6 +16,7 @@ jobs:
       DB_HOSTNAME: ${{ secrets.DB_HOST_WORKFLOW }}
       DB_USER: ${{ secrets.DB_USER_WORKFLOW }}
       DB_PWD:
+      DB_NAME: ${{ secrets.DB_NAME_WORKFLOW }}
 
     steps:
       
@@ -46,13 +47,6 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist
 
-#      - name: Install MySQL client
-#        uses: mirromutth/mysql-action@v1
-#        with:
-#          mysql version: '8.0'
-#          mysql database: ${{ secrets.DB_NAME_WORKFLOW }}
-#          mysql password: ${{ secrets.DB_PWD_WORKFLOW }}
-#          mysql user: ${{ secrets.DB_USER_WORKFLOW }}
       - name: Install MySQL client
         continue-on-error: true
         uses: shogo82148/actions-setup-mysql@v1
