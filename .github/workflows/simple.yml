@@ -63,15 +63,14 @@ jobs:
           mysql root password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" is empty, default is empty. The root superuser password
           mysql user: ${{ secrets.DB_USER_WORKFLOW }} # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
           mysql password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" exists. The password for the "mysql user"
-          run: |
-            mysql -h ${{ secrets.DB_HOST_WORKFLOW }} -u ${{ secrets.DB_USER_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SELECT version();'
-            mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'create schema ${{ secrets.DB_NAME_WORKFLOW }};'
-            mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SHOW DATABASES;'
-            mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} ${{ secrets.DB_NAME_WORKFLOW }} < db/database.sql
+        run: |
+          mysql -h ${{ secrets.DB_HOST_WORKFLOW }} -u ${{ secrets.DB_USER_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SELECT version();'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'create schema ${{ secrets.DB_NAME_WORKFLOW }};'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} -e 'SHOW DATABASES;'
+          mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -p${{ secrets.DB_PWD_WORKFLOW }} ${{ secrets.DB_NAME_WORKFLOW }} < db/database.sql
 
       - name: Replace placeholders in .env file
         run: |
-          ALTER USER 'root'@'localhost' IDENTIFIED BY 'NewPassword';
           pwd
           ls
           echo ${{ github.workspace }}
