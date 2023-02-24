@@ -23,7 +23,6 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_DATABASE: ${{ secrets.DB_NAME_WORKFLOW }}
-          MYSQL_USER: ${{ secrets.DB_USER_WORKFLOW }}
           MYSQL_PASSWORD : ${{ secrets.DB_PWD_WORKFLOW }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PWD_WORKFLOW }}
         ports:
