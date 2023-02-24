@@ -1,0 +1,6 @@
+/composer.lock
+.idea/*
+bin/
+vendor/
+.env
+.idea/workspace.xml

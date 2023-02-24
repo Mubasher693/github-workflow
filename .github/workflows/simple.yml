@@ -9,38 +9,56 @@ on:
 jobs:
   this-is-job-name:
     runs-on: ubuntu-latest
+    env:
+      DB_HOSTNAME: ${{ secrets.DB_HOST_WORKFLOW }}
+      DB_USER: ${{ secrets.DB_USER_WORKFLOW }}
+      DB_PWD: ${{ secrets.DB_PWD_WORKFLOW }}
+
     steps:
       
       - name: echo a string
         run: echo "Hello World"
       
-      - name: multile script
-        run: |
-          echo 'Command 1'
-          echo 'Command 2'
-      
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
+#      - name: Shutdown Ubuntu MySQL (SUDO)
+#        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mysqli
 
       - name: Install MySQL client
-        uses: mirromutth/mysql-action@v1.1
+        uses: actions/setup-mysql@v1
         with:
-            host port: ${{ secrets.DB_PORT_WORKFLOW }} # Optional, default value is 3306. The port of host
-            container port: ${{ secrets.DB_PORT_WORKFLOW }} # Optional, default value is 3306. The port of container
-            character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
-            collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
-            mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
-            mysql database: ${{ secrets.DB_NAME_WORKFLOW }} # Optional, default value is "test". The specified database which will be create
-            mysql root password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" is empty, default is empty. The root superuser password
-            mysql user: ${{ secrets.DB_USER_WORKFLOW }} # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-            mysql password: ${{ secrets.DB_PWD_WORKFLOW }} # Required if "mysql user" exists. The password for the "mysql user"
+          mysql-version: '8.0'
+          mysql-port: ${{ secrets.DB_PORT_WORKFLOW }}
+          mysql-root-password: ${{ secrets.DB_PWD_WORKFLOW }}
+
+      - name: Install Composer
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php --install-dir=bin --filename=composer
+          php -r "unlink('composer-setup.php');"
+
+      - name: Install dependencies
+        run: composer install
+
 #        uses: shogo82148/actions-setup-mysql@v1
 #        with:
 #          mysql-version: '8.0'
+      - name: Replace placeholders in .env file
+        run: |
+          envsubst < .env.sample > .env
 
+      - name: Run tests
+        run: |
+          pwd
+          ls
+          ./vendor/bin/phpunit --verbose tests/UserTest.php
 
       - name: Restore Database
         run: |
