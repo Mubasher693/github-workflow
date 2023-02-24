@@ -57,13 +57,6 @@ jobs:
         run: |
           envsubst < .env.sample > .env
 
-      - name: Run tests
-        run: |
-          pwd
-          ls
-          cat ${{ github.workspace }}/.env
-          ./vendor/bin/phpunit --verbose tests/UserTest.php
-
       - name: Restore Database
         continue-on-error: true
         run: |
@@ -77,5 +70,10 @@ jobs:
           mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} ${{ secrets.DB_NAME_WORKFLOW }} < db/database.sql
           mysql -u${{ secrets.DB_USER_WORKFLOW }} -h${{ secrets.DB_HOST_WORKFLOW }} -e 'SHOW TABLES FROM ${{ secrets.DB_NAME_WORKFLOW }};'
           
-      
           
+      - name: Run tests
+        run: |
+          pwd
+          ls
+          cat ${{ github.workspace }}/.env
+          ./vendor/bin/phpunit --verbose tests/UserTest.php
