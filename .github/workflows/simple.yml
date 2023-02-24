@@ -10,6 +10,9 @@ jobs:
   this-is-job-name:
     runs-on: ubuntu-latest
     env:
+      extensions: mcrypt, curl, gd, intl, oauth, mysql, imagick, zip
+      php-versions: '8.0'
+      key: php-v8.0
       DB_HOSTNAME: ${{ secrets.DB_HOST_WORKFLOW }}
       DB_USER: ${{ secrets.DB_USER_WORKFLOW }}
       DB_PWD: ${{ secrets.DB_PWD_WORKFLOW }}
@@ -22,11 +25,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up PHP
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
-          extensions: mysqli
+          php-version: ${{ env.php-versions }}
+          extensions: ${{ env.extensions }}
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist
 
       - name: Install MySQL client
         uses: mirromutth/mysql-action@v1
